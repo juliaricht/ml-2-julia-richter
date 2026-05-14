@@ -1,0 +1,19 @@
+project:
+  name: smartmanu-ad-cfrp
+  random_seed: 42
+
+dataset:
+  name: CFRP
+  source_url: https://github.com/SmartManuAD/Smart-Manufacturing-AD
+  raw_path: data/raw/5_cfrp.npz
+  processed_dir: data/processed
+
+split:
+  train: 0.70
+  val: 0.20
+  test: 0.10
+  stratify_on_label: true
+
+mlflow:
+  tracking_uri: file:./mlruns
+  experiment_name: cfrp-anomaly-detection
