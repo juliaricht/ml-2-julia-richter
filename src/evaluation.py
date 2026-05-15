@@ -1,8 +1,8 @@
-"""Evaluation utilities for binary anomaly detection on imbalanced data.
+"""Evaluation utilities für binäre Anomalie-Erkennung (imbalanced dataset).
 
-Models produce continuous anomaly scores; we pick a threshold on the
-validation split (by maximizing F1) and apply that threshold to the test
-split. Threshold-independent metrics (ROC-AUC, PR-AUC) are reported too.
+Model gibt kontinuierlich Anomaly-scores aus;  threshold wird ausgewähltauf dem
+validation split (by maximizing F1); threshold angewendet auf  test
+split. Threshold-independent Metriken (ROC-AUC, PR-AUC) werden ausgegeben.
 """
 
 from __future__ import annotations
@@ -40,9 +40,9 @@ class Metrics:
 
 
 def best_f1_threshold(y_true: np.ndarray, scores: np.ndarray) -> Tuple[float, float]:
-    """Return (threshold, f1) that maximize F1 on the given split.
+    """Ausgabe von (threshold, f1) doe F1 im geg. Split maximieren.
 
-    Uses the precision/recall curve to enumerate candidate thresholds; this is
+    precision/recall-curve to enumerate candidate thresholds; this is
     O(n log n) and considers every score that actually appears.
     """
     precision, recall, thresholds = precision_recall_curve(y_true, scores)
