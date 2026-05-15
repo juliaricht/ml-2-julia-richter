@@ -1,9 +1,4 @@
-"""PyOD baseline runners with MLflow logging.
-
-Anomaly-detection models here are **unsupervised**: they fit on X_train only
-and produce a continuous anomaly score (higher = more anomalous). We tune the
-decision threshold on the validation split (maximize F1) and report metrics
-on the held-out test split.
+"""Der Anomalie-Score ist eine reelle Zahl. Für eine binäre Entscheidung wird eine Schwelle benötigt. Diese Schwelle wird ausschließlich auf dem Validierungs-Split bestimmt, indem über die Precision-Recall-Kurve alle realisierten Schwellenwerte aufgezählt und derjenige mit maximalem F1-Wert ausgewählt wird. Anschließend wird diese Schwelle unverändert auf den Test-Split angewandt:
 """
 
 from __future__ import annotations
@@ -42,14 +37,14 @@ class BaselineResult:
 
 
 def build_detectors(contamination: float, seed: int, include_ae: bool = True) -> dict[str, BaseDetector]:
-    """PyOD detectors for the baseline comparison.
+    """PyOD detectors for  baseline comparisons
 
-    Contamination should match the empirical anomaly rate in train data so
-    PyOD's default thresholding (which we ignore) is at least sensible; the
-    score functions themselves are unaffected.
+    Contamination should match  empirical anomaly rate in train data so
+    PyOD's default thresholding is (at least) sensible; 
+    score functions are not affected.
 
-    `include_ae=True` adds a PyTorch AutoEncoder (49→32→16→32→49). Skipped
-    automatically if torch / `pyod.models.auto_encoder` is not importable.
+    `include_ae=True` adds PyTorch AutoEncoder (49→32→16→32→49). Wird autom. 
+    übersprungen: if torch / `pyod.models.auto_encoder` = not importable.
     """
     detectors: dict[str, BaseDetector] = {
         "iforest": IForest(n_estimators=200, contamination=contamination, random_state=seed, n_jobs=-1),
@@ -112,11 +107,11 @@ def run_baseline(
 ) -> BaselineResult:
     """Fit, score, tune threshold on val, evaluate on test, log to MLflow.
 
-    `name` becomes the MLflow `run_name` and the artifact filename prefix —
+    `name` wird zu MLflow `run_name` &  artifact filename prefix —
     use a unique value per sweep combo. `model_family` overrides the default
     family tag (which is `name`); pass extra MLflow tags via `tags`.
 
-    Returns the val + test metrics as a `BaselineResult`.
+    Returns the val + test metrics as a `BaselineResult`. 
     """
     params = params or {}
 
