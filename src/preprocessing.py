@@ -1,8 +1,6 @@
-"""Preprocessing utilities for the CFRP anomaly-detection workflow.
+"""Das gesamte Preprocessing wird ausschließlich auf dem Trainings-Split gefittet und dann mit den eingefrorenen Parametern auf Validierung und Test übertragen. Ein Verstoß gegen diese Regel würde „Data Leakage“ erzeugen und die Testmetriken systematisch zu optimistisch ausweisen.
+Konkret heißt das im Code: auf X_train wird fit_transform aufgerufen, auf X_val und X_test ausschließlich transform:
 
-Fit-on-train-only: every transformer is fit on the training split and then
-applied to validation and test splits. This is the only honest way to keep
-the val/test data unseen.
 """
 
 from __future__ import annotations
@@ -32,8 +30,8 @@ def handle_missing(
 ) -> ArrayTriple:
     """Impute NaN / +-inf in all three splits.
 
-    The imputer is fit on the training split only and applied to val/test.
-    `median` is the default because sensor data is often heavy-tailed.
+     imputer  fit on training split only & applied to val/test.
+    `median` = default (sensor data often heavy-tailed)
     """
     X_train = _sanitize_inf(X_train)
     X_val = _sanitize_inf(X_val)
@@ -54,8 +52,8 @@ def scale_features(
 ) -> ArrayTriple:
     """Fit a scaler on X_train, apply to all three splits.
 
-    Default is `robust` because vibration / process-sensor features in the
-    SmartManuAD datasets tend to be heavy-tailed; outliers should not dominate
+    Default is `robust` --> vibration / process-sensor features in the
+    SmartManuAD datasets tend to be heavy-tailed. outliers should not dominate
     the scaling parameters.
     """
     scaler = StandardScaler() if kind == "standard" else RobustScaler()
