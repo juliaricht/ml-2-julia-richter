@@ -1,4 +1,4 @@
-"""MLflow helpers — load config, set tracking URI / experiment, log metadata."""
+"""MLflow Unterstützung/Hilfe/.. —  config laden ,  tracking URI / experiment, log metadata festlegen."""
 
 from __future__ import annotations
 
@@ -19,9 +19,9 @@ def load_config(path: str | Path = "config.yaml") -> dict[str, Any]:
 
 
 def _resolve_tracking_uri(uri: str, project_root: Path) -> str:
-    """Anchor relative `file:` URIs to the project root.
+    """ankern der relative `file:` URIs to project Basis.
 
-    Without this, running a notebook from notebooks/ would create mlruns/
+    Ohne dies: running a notebook from notebooks/ would create mlruns/
     inside that subfolder instead of at the project root.
     """
     if uri.startswith("file:"):
