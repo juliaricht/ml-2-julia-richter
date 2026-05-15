@@ -1,4 +1,4 @@
-"""Data loading and splitting for the SmartManuAD CFRP dataset."""
+"""Daten laden und aufteilen."""
 
 from __future__ import annotations
 
@@ -13,18 +13,14 @@ SplitSix = Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.
 
 
 def load_cfrp(path: str | Path) -> ArrayPair:
-    """Load the CFRP .npz file from the SmartManuAD repository.
-
-    The SmartManuAD pipeline stores each dataset as a compressed .npz with
-    feature matrix X and binary anomaly labels y. Key names are verified at
-    load time so a mismatched download surfaces a clear error.
+    """CFRP .npz Datei aus dem SmartManuAD repository laden.
     """
     path = Path(path)
     if not path.exists():
         raise FileNotFoundError(
             f"CFRP archive not found at {path}. "
-            "Download it from https://github.com/SmartManuAD/Smart-Manufacturing-AD "
-            "and place it in data/raw/."
+            "herunterladen von https://github.com/SmartManuAD/Smart-Manufacturing-AD "
+            "und einsetzen in:  data/raw/."
         )
 
     with np.load(path, allow_pickle=False) as archive:
@@ -52,9 +48,7 @@ def split_70_20_10(
 ) -> SplitSix:
     """Split into 70% train / 20% val / 10% test.
 
-    Two-stage split: first peel off 30% as a holdout, then split that holdout
-    2:1 into val and test so the absolute proportions are exact (0.30 * 2/3
-    = 0.20 val, 0.30 * 1/3 = 0.10 test).
+    Aufteilung ist wie folgt realisiert: zuerst werden 30 % als Holdout abgetrennt, danach das Holdout 2:1 in Validierung und Test geteilt
 
     Returns (X_train, y_train, X_val, y_val, X_test, y_test).
     """
